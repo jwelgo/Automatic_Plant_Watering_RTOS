@@ -19,6 +19,11 @@
 const int PIN_SENSOR_1 = 0; // Moisture sensor 1 -> a0
 const int PIN_SENSOR_2 = 1; // Moisture sensor 2 -> a1
 const int PIN_SENSOR_3 = 2; // Moisture sensor 3 -> a2
+const int PIN_SENSOR_4 = 3; // Water-level sensor -> a3
+
+const int RED_PIN = 10;
+const int GREEN_PIN = 9;
+const int BLUE_PIN = 8; 
 
 // Readings 
 const int READING_AIR = 520;
@@ -28,6 +33,7 @@ const int INTERVALS = (READING_AIR - READING_WATER) / 3;
 int MOISTURE_READING_1 = 0;
 int MOISTURE_READING_2 = 0;
 int MOISTURE_READING_3 = 0;
+int WATER_LEVEL = 0;
 int AVE_READING = 0;
 
 // Rates 
@@ -41,7 +47,15 @@ void setup() {
   // LCD setup
   lcd.begin(16, 2); // Set up the LCD's number of columns and rows:
   lcd.clear(); // Clears the LCD screen
+  
+  //RGB Setup
+  pinMode(RED_PIN,  OUTPUT);              
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
 
+  // Read initial water-level
+  WATER_LEVEL = analogRead(PIN_SENSOR_4);
+  
   // Moisture sensor setup
   Serial.begin(BAUD_RATE); // Open serial port, set the baud rate
 }
@@ -53,22 +67,34 @@ void loop() {
 
   AVE_READING = (MOISTURE_READING_1 + MOISTURE_READING_2 + MOISTURE_READING_3) / 3;
 
-  String val = "NULL Input";
   if (AVE_READING > READING_WATER && AVE_READING < (READING_WATER + INTERVALS)) {
-    val = "Very Wet";
+    setColor(0, 64, 255); // Very wet -> Blue
   }
   else if (AVE_READING > (READING_WATER + INTERVALS) && AVE_READING < (READING_AIR - INTERVALS)) {
-    val = "Wet";
+    setColor(0, 200, 0); // Wet -> Green
   }
   else if (AVE_READING < READING_AIR && AVE_READING > (READING_AIR - INTERVALS)) {
-    val = "Dry";
+    setColor(255, 0, 0); // Dry -> Red
   }  
+
+  /*
+  *   INSERT PUMP LOGIC HERE 
+  */
+
+  WATER_LEVEL = analogRead(PIN_SENSOR_4);
 
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("Moisture:");
+  lcd.print("Water Level:");
   lcd.setCursor(0,1);
-  lcd.print(val);  
+  lcd.print(WATER_LEVEL);  
 
-  delay(LCD_REFRESH);  
+  delay(LCD_REFRESH); 
+}
+
+// Helper function to set RGB color
+void setColor(int redValue, int greenValue,  int blueValue) {
+  analogWrite(RED_PIN, redValue);
+  analogWrite(GREEN_PIN,  greenValue);
+  analogWrite(BLUE_PIN, blueValue);
 }
