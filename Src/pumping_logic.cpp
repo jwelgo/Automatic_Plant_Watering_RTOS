@@ -1,44 +1,15 @@
-/* Moisture Sensor Test Run
- * This code reads data from a moisture sensor connected to analog pin A0
- * and displays the moisture level on a 16x2 LCD screen. It also sends the
- * moisture data to the serial monitor every 20 seconds.
+/* Moisture Sensor Logic File
+ * Project: Automated Plant Watering System
+ * Description: This file contains the logic for reading moisture sensors,
+ *              determining soil moisture levels, and controlling the RGB LED
+ *              to indicate the moisture status. It also reads the water level
+ *              from a dedicated sensor.
  * 
- * Hardware Connections:
- * - Moisture Sensor: Connect the sensor's output to analog pin A0.
- * - LCD Display: Connect the LCD to digital pins 2, 3, 4, 5, 11, and 12.
+ * Author: John Welgoss
  */
 
-// Import necessary packages
-#include <LiquidCrystal.h>
-#include <Arduino.h>
-#include <string.h>
-
-// Define global variables 
-
-// GPIOs
-const int PIN_SENSOR_1 = 0; // Moisture sensor 1 -> a0
-const int PIN_SENSOR_2 = 1; // Moisture sensor 2 -> a1
-const int PIN_SENSOR_3 = 2; // Moisture sensor 3 -> a2
-const int PIN_SENSOR_4 = 3; // Water-level sensor -> a3
-
-const int RED_PIN = 10;
-const int GREEN_PIN = 9;
-const int BLUE_PIN = 8; 
-
-// Readings 
-const int READING_AIR = 520;
-const int READING_WATER = 260;
-const int INTERVALS = (READING_AIR - READING_WATER) / 3; 
-
-int MOISTURE_READING_1 = 0;
-int MOISTURE_READING_2 = 0;
-int MOISTURE_READING_3 = 0;
-int WATER_LEVEL = 0;
-int AVE_READING = 0;
-
-// Rates 
-const int LCD_REFRESH = 500; // Read new data every 0.5s
-const int BAUD_RATE = 9600; // Baud rate as 9600 bps 
+// Import header file
+#include "pumping_logic.hpp"
 
 // Creates an LCD object. Parameters: (rs, enable, d4, d5, d6, d7)
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
