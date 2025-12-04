@@ -8,19 +8,18 @@
 
 
 // Import necessary packages
-#include <LiquidCrystal.h>
 #include <Arduino.h>
 #include <string.h>
 #include <stdint.h>
-// Include pumping logic
 
-// Define global variables 
-// LCD
-LiquidCrystal lcd(12, 11, 10, 9, 8, 4);  
+// Define global variables   
 
-//Buttons 
-const uint8_t BUTTON_MODE = 4; // Mode Button -> a4
-const uint8_t BUTTON_START = 5; // Mode Button -> a5
+//Buttons and LEDS
+const uint8_t BUTTON_MODE = 8; 
+const uint8_t BUTTON_START = 9; 
+const uint8_t SMALL = 12;
+const uint8_t MEDIUM = 11;
+const uint8_t LARGE = 10;
 
 // GPIOs
 const uint8_t PIN_SENSOR_1 = 0; // Moisture sensor 1 -> a0
@@ -75,8 +74,15 @@ void setup() {
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(BLUE_PIN, OUTPUT);
 
+  //LEDs
   pinMode(WARNING_PIN, OUTPUT);
   digitalWrite(WARNING_PIN, LOW);
+  pinMode(SMALL, OUTPUT);
+  digitalWrite(SMALL, LOW);
+  pinMode(MEDIUM, OUTPUT);
+  digitalWrite(MEDIUM, LOW);
+  pinMode(LARGE, OUTPUT);
+  digitalWrite(LARGE, LOW);
 
   pinMode(PUMP_PIN, OUTPUT);
   digitalWrite(PUMP_PIN, HIGH);  // Pump off
@@ -154,39 +160,40 @@ void setColor(int redValue, int greenValue,  int blueValue) {
 // ---------------- STARTUP MENU ----------------
 
 void showStartupMenu() {
-  lcd.begin(16, 2);
-  lcd.clear();
-  lcd.print("Select Sensors");
 
   while (true) {
-      // First line shows mode
-      lcd.setCursor(0, 1);
-      lcd.print("Mode: ");
-      lcd.print(sensorMode);
-      lcd.print(" sensor  ");
 
       // Button MODE cycles through 1 → 2 → 3 → 1
-      if (digitalRead(BUTTON_MODE) == LOW) {
+      if (digitalRead(BUTTON_MODE) == HIGH) {
           sensorMode++;
           if (sensorMode > 3) sensorMode = 1;
-          delay(300);
+          delay(250);  // Debounce
+      }
+
+      if (sensorMode == 1) {
+        digitalWrite(SMALL, HIGH);
+        digitalWrite(MEDIUM, LOW);
+        digitalWrite(LARGE, LOW);
+      } else if (sensorMode == 2) {
+        digitalWrite(SMALL, LOW);
+        digitalWrite(MEDIUM, HIGH);
+        digitalWrite(LARGE, LOW);        
+      } else {
+        digitalWrite(SMALL, LOW);
+        digitalWrite(MEDIUM, LOW);
+        digitalWrite(LARGE, HIGH);
       }
 
       // START button locks selection
-      if (digitalRead(BUTTON_START) == LOW) {
-          delay(250);
+      if (digitalRead(BUTTON_START) == HIGH) {
+          delay(250);  // Debounce
           break;
       }
   }
 
-  // Show confirmation
-  lcd.clear();
-  lcd.print("Starting with");
-  lcd.setCursor(0, 1);
-  lcd.print(sensorMode);
-  lcd.print(" sensors...");
-  delay(1000);
-
-  lcd.noDisplay();
   systemStarted = true;
+
+  digitalWrite(SMALL, LOW);
+  digitalWrite(MEDIUM, LOW);
+  digitalWrite(LARGE, LOW); 
 }
