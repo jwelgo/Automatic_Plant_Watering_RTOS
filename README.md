@@ -75,22 +75,22 @@ Water level is converted into millimeters using:
 
 ## Pinout Summary  
 
-**Component            | Pin**
-*******************************
- Button – Mode        | 8   
- Button – Start       | 9   
- LED – Small Mode     | 12  
- LED – Medium Mode    | 11  
- LED – Large Mode     | 10  
- Moisture Sensor 1    | 0 (a0) 
- Moisture Sensor 2    | 1 (a1) 
- Moisture Sensor 3    | 2 (a2) 
- Water-Level Sensor   | 3 (a3) 
- RGB LED – Red        | 3   
- RGB LED – Green      | 5   
- RGB LED – Blue       | 6   
- Warning LED          | 2   
- 5V Relay             | 7   
+| Component | Pin |
+| :------- | :------: |
+| Button - Mode | 8 |
+| Button – Start | 9 |
+| LED – Small Mode | 12 | 
+| LED – Medium Mode | 11 | 
+| LED – Large Mode | 10 | 
+| Moisture Sensor 1 | 0 (a0) |
+| Moisture Sensor 2 | 1 (a1) |
+| Moisture Sensor 3 | 2 (a2) |
+| Water-Level Sensor | 3 (a3) |
+| RGB LED – Red | 3 |  
+| RGB LED – Green | 5 |  
+| RGB LED – Blue | 6 |  
+| Warning LED | 2 |  
+| 5V Relay | 7 |  
 
 
 
