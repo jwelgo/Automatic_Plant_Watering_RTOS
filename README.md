@@ -1,5 +1,5 @@
 # Automatic Plant Watering System  
-* A Smart Irrigation Controller with Moisture Sensors, RGB Status LED, Pump Control & Component Safety Features *
+A Smart Irrigation Controller with Moisture Sensors, RGB Status LED, Pump Control & Component Safety Features
 
 
 
@@ -75,7 +75,7 @@ Water level is converted into millimeters using:
 
 ## Pinout Summary  
 
-`Component             Pin`
+**Component            | Pin**
 *******************************
  Button – Mode        | 8   
  Button – Start       | 9   
